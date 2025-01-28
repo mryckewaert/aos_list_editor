@@ -12,3 +12,48 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id          String    @id @unique @default(uuid())
+  name        String
+  password    String
+  role        Role      @default(USER)
+}
+
+model Faction {
+  id      String    @id @unique @default(uuid())
+  name    String
+
+  lists   List[]
+  units   Unit[]
+}
+
+model List {
+  id              String    @id @unique @default(uuid())
+  name            String
+  limit           String
+
+  units           Unit[]
+
+  faction         Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
+  factionId       String
+}
+
+model Unit {
+  id                String    @id @unique @default(uuid())
+  name              String
+  cost              Int
+  keywords          String[]
+  joinBy            String[]
+  joinLimitation    String[]
+
+  lists             List[]
+
+  faction           Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
+  factionId         String
+}
