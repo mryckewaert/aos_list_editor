@@ -13,16 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
 
 model User {
   id          String    @id @unique @default(uuid())
+  githubId    String    
   name        String
-  password    String
-  role        Role      @default(USER)
+  isAdmin     Boolean
+
+  sessions    Session[]
 }
 
 model Faction {
@@ -56,4 +54,12 @@ model Unit {
 
   faction           Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
   factionId         String
+}
+
+model Session {
+  id          String   @id @unique @default(uuid())
+  userId      String
+  expiresAt   DateTime
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
