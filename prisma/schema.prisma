@@ -21,11 +21,12 @@ model User {
   isAdmin     Boolean
 
   sessions    Session[]
+  lists       List[]
 }
 
 model Faction {
   id      String    @id @unique @default(uuid())
-  name    String
+  name    String    @unique
 
   lists   List[]
   units   Unit[]
@@ -33,33 +34,45 @@ model Faction {
 
 model List {
   id              String    @id @unique @default(uuid())
-  name            String
+  name            String    
   limit           String
 
-  units           Unit[]
+  listUnit        ListUnits?
 
   faction         Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
   factionId       String
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
 }
 
 model Unit {
   id                String    @id @unique @default(uuid())
-  name              String
+  name              String    @unique
   cost              Int
   keywords          String[]
   joinBy            String[]
   joinLimitation    String[]
 
-  lists             List[]
-
   faction           Faction   @relation(fields: [factionId], references: [id], onDelete: Cascade)
   factionId         String
+
+  listUnit          ListUnits[]
+}
+
+model ListUnits {
+  unitsOrder  Json[]
+
+  list            List    @relation(fields: [listId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  listId          String  @id @unique
+
+  units           Unit[]
 }
 
 model Session {
   id          String   @id @unique @default(uuid())
-  userId      String
   expiresAt   DateTime
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 }
