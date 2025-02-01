@@ -11,6 +11,20 @@ export async function getAllFactions() {
 	}
 }
 
+export async function getAllFactionsAndUnits() {
+	try {
+		return await prisma.faction.findMany({
+			select: {
+				units: true
+			}
+		});
+	} catch {
+		error(404, {
+			message: 'Not found'
+		});
+	}
+}
+
 export async function getOneFaction(factionId: string) {
 	try {
 		return await prisma.faction.findUnique({ where: { id: factionId } });

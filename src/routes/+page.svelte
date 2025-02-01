@@ -1,16 +1,30 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import type { PageProps } from './$types';
 
 	const { data } = $props();
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<div class="homePage">
+	<ul>
+		{#if data.isAdmin}
+			<li><a href="/faction">Factions</a></li>
+		{/if}
+		<li><a href="/list">Mes Listes</a></li>
+	</ul>
 
-{#if data.userName}
-	<h1>{data.userName}</h1>
-	<form method="post" use:enhance>
-		<button>Sign out</button>
-	</form>
-{/if}
+	{#if data.userName}
+		<form method="post" use:enhance>
+			<button>Sign out</button>
+		</form>
+	{/if}
+</div>
+
+<style>
+	.homePage {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		width: 100%;
+	}
+</style>

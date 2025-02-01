@@ -14,3 +14,12 @@ export interface UpdateUnitInfo {
 	joinBy: string[] | null;
 	joinLimitation: string[] | null;
 }
+
+export interface Unit {
+	id: string;
+	name: string;
+	cost: number;
+	keywords: string[];
+	joinBy: string[];
+	joinLimitation: string[];
+}

@@ -49,7 +49,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 
 		if (existingUser) {
-			console.log('pass');
 			const sessionToken = generateSessionToken();
 			const session = await createSession(sessionToken, existingUser.id);
 			setSessionTokenCookie(event, sessionToken, session.expiresAt);
@@ -60,24 +59,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				}
 			});
 		} else {
-			// const githubEmailResponse = await fetch('https://api.github.com/user/emails', {
-			// 	headers: {
-			// 		Authorization: `Bearer ${accessToken}`
-			// 	}
-			// }).then(null, () => {
-			// 	return null;
-			// });
-			// const githubEmail: GitHubEmail[] = await githubEmailResponse?.json();
-
-			// console.log(githubEmail);
-			// get the primary email
-			// const primary = githubEmail.find((entry) => entry.primary);
-			// if (primary) {
 			const user = await createUser(githubUserId, githubUsername);
 			const sessionToken = generateSessionToken();
 			const session = await createSession(sessionToken, user.id);
 			setSessionTokenCookie(event, sessionToken, session.expiresAt);
-			// }
 		}
 
 		return new Response(null, {
@@ -89,12 +74,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	} catch (e) {
 		// Invalid code or client credentials
 		if (e instanceof OAuth2RequestError) {
-			console.log('hi', e);
 			return new Response(null, {
 				status: 400
 			});
 		}
-		console.log(e);
 		return new Response(null, {
 			status: 500
 		});

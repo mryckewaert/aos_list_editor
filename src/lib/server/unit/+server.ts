@@ -12,7 +12,7 @@ export async function getAllUnits() {
 	}
 }
 
-export async function getAllFactionUnits(factionId: string) {
+export async function getFactionUnits(factionId: string) {
 	try {
 		return await prisma.unit.findMany({ where: { factionId } });
 	} catch {
