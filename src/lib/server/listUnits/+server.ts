@@ -41,7 +41,7 @@ export async function updateListUnits(listId: string, unitsOrder: Prisma.JsonArr
 		return await prisma.listUnits.update({
 			where: { listId },
 			data: {
-				unitsOrder: unitsOrder !== null ? unitsOrder : []
+				unitsOrder: unitsOrder !== null ? unitsOrder : undefined
 			}
 		});
 	} catch (e) {

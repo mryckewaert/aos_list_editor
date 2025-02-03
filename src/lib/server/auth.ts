@@ -17,6 +17,7 @@ export function generateSessionToken(): string {
 
 export async function createSession(token: string, userId: string): Promise<Session> {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+	// session of 30 days
 	const session: Session = {
 		id: sessionId,
 		userId,
@@ -46,6 +47,7 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 		await prisma.session.delete({ where: { id: sessionId } });
 		return { session: null, user: null };
 	}
+	// We update session if it's < at 15 days
 	if (Date.now() >= session.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15) {
 		session.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 		await prisma.session.update({

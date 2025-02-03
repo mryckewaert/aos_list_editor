@@ -67,6 +67,9 @@ export async function updateUnit(id: string, unit: UpdateUnitInfo) {
 			throw new Error("Unit doesn't exist");
 		}
 
+		// If we don't change some part of request the value is a null
+		// null value don't stop request
+		// undefined value stop the request (maybe need a change)
 		return await prisma.unit.update({
 			where: { id },
 			data: {

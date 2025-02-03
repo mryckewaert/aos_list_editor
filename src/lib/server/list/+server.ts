@@ -57,6 +57,9 @@ export async function updateList(id: string, list: UpdateListInfo) {
 			throw new Error("List doesn't exist");
 		}
 
+		// If we don't change some part of request the value is a null
+		// null value don't stop request
+		// undefined value stop the request (maybe need a change)
 		return await prisma.list.update({
 			where: { id },
 			data: {
