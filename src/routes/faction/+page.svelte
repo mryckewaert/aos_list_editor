@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
 	let { data } = $props();
 </script>
 
 <ul class="factionList">
 	<li class="faction">
-		<form method="post" action="?/createFaction" style="width: 100%;">
+		<form method="post" action="?/createFaction" style="width: 100%;" use:enhance>
 			<label class="factionContent">
 				Créer une faction :
 				<input name="factionName" autocomplete="off" class="addInput" />
@@ -20,7 +22,7 @@
 				<div class="factionName">
 					{faction.name}
 				</div>
-				<form method="post" action="?/deleteFaction">
+				<form method="post" action="?/deleteFaction" use:enhance>
 					<input type="hidden" name="factionId" value={faction.id} />
 					<button class="formButton">Supprimer</button>
 				</form>

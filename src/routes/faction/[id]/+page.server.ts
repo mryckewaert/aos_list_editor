@@ -1,6 +1,6 @@
 import type { CreateUnitInfo, Unit, UpdateUnitInfo } from '$lib/interfaces/unit';
 import { getOneFaction } from '$lib/server/faction/+server';
-import { createUnit, getFactionUnits, updateUnit } from '$lib/server/unit/+server';
+import { createUnit, deleteUnit, getFactionUnits, updateUnit } from '$lib/server/unit/+server';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from '../$types';
 
@@ -70,6 +70,17 @@ export const actions: Actions = {
 				joinLimitation
 			};
 			updateUnit(unitId, unit);
+			return redirect(303, `/faction/${factionId}`);
+		}
+	},
+
+	deleteUnit: async ({ request }) => {
+		const data = await request.formData();
+		const unitId = data.get('unitId')?.toString();
+		const factionId = data.get('factionId')?.toString();
+
+		if (unitId && factionId) {
+			deleteUnit(unitId);
 			return redirect(303, `/faction/${factionId}`);
 		}
 	}

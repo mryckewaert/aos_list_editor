@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
 	let { data } = $props();
 </script>
 
@@ -15,7 +17,7 @@
 			</ul>
 		</li>
 		<li class="unit">
-			<form method="post" action="?/createUnit" style="width: 100%;">
+			<form method="post" action="?/createUnit" style="width: 100%;" use:enhance>
 				<ul class="form">
 					<li><input name="unitName" autocomplete="off" class="addInput" /></li>
 					<li><input name="unitKeywords" autocomplete="off" class="addInput" /></li>
@@ -27,14 +29,14 @@
 					</li>
 					<li><input name="unitCost" autocomplete="off" class="addInput" /></li>
 					<input type="hidden" name="factionId" value={data.faction?.id} />
-					<li><button>Créer</button></li>
+					<li><button class="formButton">Créer</button></li>
 				</ul>
 			</form>
 		</li>
 		{#each data.units as unit (unit.id)}
 			<li class="unit">
-				<form method="post" action="?/updateUnit" style="width: 100%">
-					<ul class="form">
+				<ul class="form">
+					<form method="post" action="?/updateUnit" class="form" use:enhance>
 						<li><input name="unitName" autocomplete="off" value={unit.name} class="addInput" /></li>
 						<li>
 							<input
@@ -63,9 +65,16 @@
 						<li><input name="unitCost" autocomplete="off" value={unit.cost} class="addInput" /></li>
 						<input type="hidden" name="unitId" value={unit.id} />
 						<input type="hidden" name="factionId" value={data.faction?.id} />
-						<li><button>Update</button></li>
-					</ul>
-				</form>
+						<li><button class="formButton">Update</button></li>
+					</form>
+					<li>
+						<form method="post" action="?/deleteUnit" use:enhance>
+							<input type="hidden" name="unitId" value={unit.id} />
+							<input type="hidden" name="factionId" value={data.faction?.id} />
+							<button class="formButton">Delete</button>
+						</form>
+					</li>
+				</ul>
 			</li>
 		{/each}
 	</ul>
@@ -141,5 +150,20 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+	}
+
+	.addInput {
+		padding: 0.25rem 0.75rem;
+		margin-right: 0;
+		background-color: #0c6f8d;
+		color: goldenrod;
+	}
+
+	.formButton {
+		border-radius: 60px / 60px;
+		border: none;
+		color: goldenrod;
+		background-color: #0c6f8d;
+		padding: 0.25rem 1rem;
 	}
 </style>
