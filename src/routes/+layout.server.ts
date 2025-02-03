@@ -3,6 +3,7 @@ import {
 	setSessionTokenCookie,
 	deleteSessionTokenCookie
 } from '$lib/server/auth';
+import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
@@ -27,5 +28,7 @@ export const load: LayoutServerLoad = async (event) => {
 			userName: user.name,
 			isAdmin: user.isAdmin
 		};
+	} else if (!event.locals.user && event.url.pathname !== '/login') {
+		return redirect(302, '/login');
 	}
 };
